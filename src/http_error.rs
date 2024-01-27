@@ -1,6 +1,5 @@
-use std::fmt;
 use reqwest::StatusCode;
-
+use std::fmt;
 
 #[derive(Debug)]
 pub struct HttpError {
@@ -31,4 +30,3 @@ mod tests {
         );
     }
 }
-

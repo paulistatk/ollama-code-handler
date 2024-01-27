@@ -1,15 +1,27 @@
-use std::error::Error;
+use super::generate::generate;
+
 use super::tags::tags;
+use std::error::Error;
 
 pub async fn run() -> Result<(), Box<dyn Error>> {
     match tags().await {
         Ok(result) => {
             println!("Resultado: {}", result);
-            Ok(())
+            let string = "ma oe".to_string();
+            match generate(&string).await {
+                Ok(result) => {
+                    println!("Resultado: {}", result);
+                    return Ok(());
+                }
+                Err(e) => {
+                    eprintln!("Erro ao fazer a requisição: {}", e);
+                    return Err(e);
+                }
+            }
         }
         Err(e) => {
             eprintln!("Erro ao fazer a requisição: {}", e);
-            Err(e)
+            return Err(e);
         }
     }
 }
@@ -17,12 +29,11 @@ pub async fn run() -> Result<(), Box<dyn Error>> {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use mockito::{mock, server_url};
     use tokio::runtime::Runtime;
 
     #[test]
     fn test_run_success() {
-        let mut rt = Runtime::new().unwrap();
+        let rt = Runtime::new().unwrap();
         let result = rt.block_on(run());
 
         assert!(result.is_ok());

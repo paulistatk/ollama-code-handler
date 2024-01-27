@@ -2,8 +2,16 @@ use super::http_error::HttpError;
 use reqwest::Client;
 use std::error::Error;
 
-pub async fn fetch(client: &Client, endpoint: &str) -> Result<String, Box<dyn Error>> {
-    let res = client.get(endpoint).send().await?;
+pub async fn post(
+    client: &Client,
+    endpoint: &str,
+    payload: &str,
+) -> Result<String, Box<dyn Error>> {
+    let res = client
+        .post(endpoint)
+        .body(payload.to_string())
+        .send()
+        .await?;
 
     if res.status().is_success() {
         let body = res.text().await?;

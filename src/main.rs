@@ -1,7 +1,9 @@
-mod http_error;
 mod fetch;
-mod tags;
+mod generate;
+mod http_error;
+mod post;
 mod run;
+mod tags;
 
 #[tokio::main]
 async fn main() {
