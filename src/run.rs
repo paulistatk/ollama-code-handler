@@ -1,5 +1,4 @@
 use super::generate::generate;
-
 use super::tags::tags;
 use std::error::Error;
 
