@@ -5,7 +5,7 @@ use std::error::Error;
 pub async fn generate(payload: &String) -> Result<String, Box<dyn Error>> {
     // Cria um objeto JSON
     let json = json!({
-        "model": "mistral",
+        "model": "codellama",
         "prompt": payload,
         "stream": false
     });

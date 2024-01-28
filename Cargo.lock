@@ -650,6 +650,7 @@ dependencies = [
 name = "ollama-code-handler"
 version = "0.1.0"
 dependencies = [
+ "futures-util",
  "ignore",
  "mockito",
  "reqwest",

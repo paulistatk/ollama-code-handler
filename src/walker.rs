@@ -1,36 +1,9 @@
 use ignore::Walk;
-use std::fs::File;
-
-pub fn get_all_content() -> std::io::Result<String> {
-    let mut output = String::new();
-    for result in Walk::new(".") {
-        match result {
-            Ok(entry) => {
-                let path = entry.path();
-                if path.is_file() {
-                    output.push_str(&format!("Trilha do arquivo: {:?}\n", path));
-                    match File::open(&path) {
-                        Ok(mut file) => {
-                            let mut contents = String::new();
-                            if let Err(e) = file.read_to_string(&mut contents) {
-                                eprintln!("Erro ao ler arquivo {:?}: {}", path, e);
-                            } else {
-                                output.push_str(&format!("Conteúdo do arquivo: {}\n", contents));
-                            }
-                        }
-                        Err(e) => eprintln!("Erro ao abrir arquivo {:?}: {}", path, e),
-                    }
-                }
-            }
-            Err(err) => println!("ERRO: {}", err),
-        }
-    }
-    Ok(output)
-}
-
-use std::io::Read;
+use std::io::{Read, Write};
 use tokio::task;
 use crate::run;
+use std::fs::File;
+use serde_json::Value; // Adicione esta linha
 
 pub async fn do_each_file() {
     for result in Walk::new(".") {
@@ -54,8 +27,19 @@ pub async fn do_each_file() {
                                 "Caminho do arquivo: {:?}\nConteúdo do arquivo: {}",
                                 path, contents
                             );
-                            if let Err(e) = run::run(test_output).await {
-                                eprintln!("Erro: {}", e);
+                            let result = run::run(test_output).await;
+                            match result {
+                                Ok(json) => {
+                                    // Parse o JSON e obtenha o valor do atributo 'response'
+                                    let v: Value = serde_json::from_str(&json).unwrap();
+                                    let response = v["response"].as_str().unwrap_or("");
+
+                                    // Escreva o valor do atributo 'response' em um arquivo .md
+                                    let output_path = format!("{}.md", path.to_string_lossy());
+                                    let mut file = File::create(&output_path).unwrap();
+                                    file.write_all(response.as_bytes()).unwrap();
+                                }
+                                Err(e) => eprintln!("Erro: {}", e),
                             }
                         }
                         Err(e) => eprintln!("Erro ao ler o arquivo: {}", e),

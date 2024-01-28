@@ -1,3 +1,7 @@
 /target
 nohup.out
 nohup.out.json
+src/*.rs.json
+Cargo.*.json
+Cargo.*.md
+src/*.rs.md
