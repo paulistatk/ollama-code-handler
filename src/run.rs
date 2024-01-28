@@ -2,7 +2,7 @@ use super::generate::generate;
 use std::error::Error;
 
 pub async fn run(output: String) -> Result<(), Box<dyn Error>> {
-    let mut string: String = "gere testes de unidade para o seguinte projeto: ".to_string();
+    let mut string: String = "gere testes de unidade para o seguinte codigo: ".to_string();
     string.push_str(&output);
     println!("{}", string);
     match generate(&string).await {
