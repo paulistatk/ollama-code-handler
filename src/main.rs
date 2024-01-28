@@ -4,10 +4,20 @@ mod http_error;
 mod post;
 mod run;
 mod tags;
+mod walker;
 
 #[tokio::main]
 async fn main() {
-    if let Err(e) = run::run().await {
-        eprintln!("Erro ao executar o programa: {}", e);
-    }
+    // Chamar get_all_content
+    // match walker::get_all_content() {
+    //     Ok(output) => {
+    //         if let Err(e) = run::run(output).await {
+    //             eprintln!("Erro: {}", e);
+    //         }
+    //     }
+    //     Err(e) => eprintln!("Erro: {}", e),
+    // }
+
+    // Chamar do_each_file
+    walker::do_each_file().await;
 }
