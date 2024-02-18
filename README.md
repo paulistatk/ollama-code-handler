@@ -9,7 +9,7 @@ The main function of the program is to walk through a directory, process each fi
 
 The program uses the following libraries:
 
-ignore for walking through the directory and finding files.
-tokio for asynchronous programming.
-reqwest for making HTTP requests to the API.
-serde_json for parsing JSON responses from the API.
+- ignore for walking through the directory and finding files.
+- tokio for asynchronous programming.
+- reqwest for making HTTP requests to the API.
+- serde_json for parsing JSON responses from the API.
